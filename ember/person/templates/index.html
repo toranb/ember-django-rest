@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<title>Users</title>
+<link href="{{ STATIC_URL }}css/default.css" rel="stylesheet" type="text/css">
+<script src="{{ STATIC_URL }}script/vendor/jquery-1.7.2.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}script/vendor/handlebars-1.0.0.beta.6.js" type="text/javascript"></script>
+<body>
+{% load templatetag_handlebars %}
+
+<script type="text/x-handlebars" data-template-name="application">
+{% verbatim %}
+  <div class = "container" >{{outlet}}</div>
+{% endverbatim %}
+</script>
+<script type="text/x-handlebars" data-template-name="person">
+{% verbatim %}
+   {{view PersonApp.AddPersonTextField placeholder="username"}}
+     <ul>
+     {{#each person in controller}}
+        <li>
+        {{view Ember.TextField valueBinding="person.username"}}
+        <input type="submit" value="update" {{action updatePerson person}}/>
+        <input type="submit" value="delete" {{action removePerson person}}/>
+        </li>
+     {{/each}}
+     </ul>
+  {% endverbatim %}
+</script>
+
+<script type="text/javascript" >
+ENV = {
+  CP_DEFAULT_CACHEABLE: true,
+  VIEW_PRESERVES_CONTEXT: true
+};
+</script>
+
+<script src="{{ STATIC_URL }}script/vendor/ember-1.0.pre.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}script/vendor/ember-data.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}script/vendor/adapter.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}script/app/person.js" type="text/javascript"></script>
+</body>
+</html>
