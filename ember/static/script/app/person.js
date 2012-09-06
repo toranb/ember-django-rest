@@ -1,34 +1,57 @@
 PersonApp = Ember.Application.create({});
 
-PersonApp.Person = Ember.Object.extend({
-    username: null
-});
+PersonApp.ApplicationController = Ember.ObjectController.extend({});
 
-PersonApp.AddPersonForm = Ember.View.extend({
-    addPerson: function(event) {
-        var username = event.context.username;
-        if (username) {
-            PersonApp.personController.addPerson(username);
-            event.context.set('username', '');
-        }
-    }
+PersonApp.ApplicationView = Ember.View.extend({
+  templateName: 'application'
 });
 
 PersonApp.PersonView = Ember.View.extend({
-    removePerson: function(event) {
-        PersonApp.personController.removePerson(event.context);
+  templateName: 'person',
+  addPerson: function(event) {
+    var username = event.context.username;
+    if (username) {
+      this.get('controller.target').send('addPerson', username);
+      event.context.set('username', '');
     }
+  }
 });
 
-PersonApp.personController = Ember.ArrayProxy.create({
-    content: [],
+PersonApp.Person = Ember.Object.extend({
+  username: null
+});
 
-    addPerson: function(username) {
+PersonApp.PersonController = Ember.ArrayController.extend({
+  content: [],
+
+  addPerson: function(person) {
+    this.pushObject(person);
+  },
+
+  removePerson: function(person) {
+    this.removeObject(person);
+  }
+});
+
+PersonApp.Router = Ember.Router.create({
+  root: Ember.Route.extend({
+    index: Ember.Route.extend({
+      route: '/',
+      addPerson: function(router, username) {
         var person = PersonApp.Person.create({ username: username });
-        this.pushObject(person);
-    },
+        router.get('personController').addPerson(person);
+      },
+      removePerson: function(router, event) {
+        var person = event.context;
+        router.get('personController').removePerson(person);
+      },
+      connectOutlets: function(router) {
+        router.get('applicationController').connectOutlet('person');
+      }
+    })
+  })
+});
 
-    removePerson: function(person) {
-        this.removeObject(person);
-    }
+$(function () {
+  PersonApp.initialize(PersonApp.Router);
 });

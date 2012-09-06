@@ -5,22 +5,26 @@
 <body>
 {% load templatetag_handlebars %}
 
-<script type="text/x-handlebars">
+<script type="text/x-handlebars" data-template-name="application">
+{% verbatim %}
+  <div id="main">
+    {{ outlet }}
+  </div>
+{% endverbatim %}
+</script>
+
+<script type="text/x-handlebars" data-template-name="person">
 {% verbatim %}
 
-   {{#view PersonApp.AddPersonForm}}
-     {{view Ember.TextField valueBinding="username"}}
-     <input type="submit" value="add" {{action addPerson this}}/>
-   {{/view}}
+   {{view Ember.TextField valueBinding="username"}}
+   <input type="submit" value="add" {{action addPerson this target="parentView"}}/>
 
    <ul>
-   {{#each person in PersonApp.personController}}
-     {{#view PersonApp.PersonView contentBinding="person"}}
-       <li>
-         {{ person.username }}
-         <input type="submit" value="delete" {{action removePerson person}}/>
-       </li>
-     {{/view}}
+   {{#each person in controller}}
+     <li>
+       {{ person.username }}
+       <input type="submit" value="delete" {{action removePerson person}}/>
+     </li>
    {{/each}}
    </ul>
 
