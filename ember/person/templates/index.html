@@ -22,7 +22,8 @@
    <ul>
    {{#each person in controller}}
      <li>
-       {{ person.username }}
+       {{view Ember.TextField valueBinding="person.username"}}
+       <input type="submit" value="update" {{action updatePerson person}}/>
        <input type="submit" value="delete" {{action removePerson person}}/>
      </li>
    {{/each}}
