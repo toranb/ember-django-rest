@@ -3,6 +3,29 @@
 <title>Users</title>
 <link href="{{ STATIC_URL }}css/default.css" rel="stylesheet" type="text/css">
 <body>
+{% load templatetag_handlebars %}
+
+<script type="text/x-handlebars">
+{% verbatim %}
+
+   {{#view PersonApp.AddPersonForm}}
+     {{view Ember.TextField valueBinding="username"}}
+     <input type="submit" value="add" {{action addPerson this}}/>
+   {{/view}}
+
+   <ul>
+   {{#each person in PersonApp.personController}}
+     {{#view PersonApp.PersonView contentBinding="person"}}
+       <li>
+         {{ person.username }}
+         <input type="submit" value="delete" {{action removePerson person}}/>
+       </li>
+     {{/view}}
+   {{/each}}
+   </ul>
+
+{% endverbatim %}
+</script>
 
 <script src="{{ STATIC_URL }}script/vendor/jquery-1.7.2.js" type="text/javascript"></script>
 <script src="{{ STATIC_URL }}script/vendor/handlebars-1.0.0.beta.6.js" type="text/javascript"></script>
