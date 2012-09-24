@@ -5,3 +5,5 @@
 .ropeproject/*
 
 ember.db
+
+node_modules/*
