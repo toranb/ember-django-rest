@@ -16,19 +16,54 @@
 <script type="text/x-handlebars" data-template-name="person">
 {% verbatim %}
 
+<div>
    {{view Ember.TextField valueBinding="username"}}
    <input type="submit" value="add" {{action addPerson this target="parentView"}}/>
+</div><br />
 
-   <ul>
-   {{#each person in controller}}
-     <li>
-       {{view Ember.TextField valueBinding="person.username"}}
-       <input type="submit" value="update" {{action updatePerson person}}/>
-       <input type="submit" value="delete" {{action removePerson person}}/>
-     </li>
+<div>
+   {{view PersonApp.SearchField placeholder="search..." valueBinding="searchText"}}
+</div>
+
+<table width="250px">
+<thead>
+
+{{#each context in controller.sortColumns}}
+<th><a {{action sortby context href=true target="controller"}}>{{context.column}}</a></th>
+{{/each}}
+
+<th>update</th>
+<th>delete</th>
+</thead>
+<tbody>
+   {{#each person in controller.paginatedContent}}
+    <tr>
+      <td>{{person.id}}</td>
+      <td>{{view Ember.TextField valueBinding="person.username"}}</td>
+      <td><input type="submit" value="update" {{action updatePerson person}}/></td>
+      <td><input type="submit" value="delete" {{action removePerson person}}/></td>
+    </tr>
    {{/each}}
-   </ul>
+</tbody>
+</table>
 
+<div name="prev"><a class="paginator" {{action prevPage href=true target="controller"}}>Prev</a></div>
+<ul class="pagination gui-text">
+  {{#each pages}}
+    {{view PersonApp.PaginationItemView contentBinding="this"}}
+  {{/each}}
+</ul>
+<div name="next"><a class="paginator" {{action nextPage href=true target="controller"}}>Next</a></div>
+{% endverbatim %}
+</script>
+
+<script type="text/x-handlebars" data-template-name="pagination_item">
+{% verbatim %}
+{{#with view}}
+<a {{action paginateUsers content href=true}}>
+  <span {{bindAttr class="spanClasses isActive:active"}}>{{content.page_id}}</span>
+</a>
+{{/with}}
 {% endverbatim %}
 </script>
 
@@ -37,6 +72,7 @@
 <script src="{{ STATIC_URL }}script/vendor/ember-1.0.pre.js" type="text/javascript"></script>
 <script src="{{ STATIC_URL }}script/vendor/ember-data.js" type="text/javascript"></script>
 <script src="{{ STATIC_URL }}script/vendor/adapter.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}script/vendor/filtersortpage.js" type="text/javascript"></script>
 <script src="{{ STATIC_URL }}script/app/person.js" type="text/javascript"></script>
 </body>
 </html>

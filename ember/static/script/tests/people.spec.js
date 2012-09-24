@@ -1,3 +1,4 @@
+require('static/script/vendor/filtersortpage.js');
 require('static/script/app/person.js');
 
 describe ("PersonApp.PersonView Tests", function(){
