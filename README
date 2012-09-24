@@ -1,1 +1,20 @@
-this is my first ember.js crud application built on the django rest framework
+a simple django web application to spike around with ember.js
+
+To run this django application
+
+1. pip install -r requirements.txt
+2. python manage.py syncdb
+3. python manage.py runserver
+
+To run the tests you first need to install phantomJS
+
+Ubuntu `apt-get install phantomjs`
+OSX `brew install phantomjs`
+
+Next run npm install to pull down the jasmine-phantom-node module
+
+npm install
+
+Now you can run the tests from the root like so
+
+node node_modules/jasmine-phantom-node/bin/jasmine-phantom-node ember/static/script/tests
