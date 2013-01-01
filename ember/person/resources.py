@@ -1,6 +1,8 @@
-from djangorestframework.resources import ModelResource
+from rest_framework import serializers
 from ember.person.models import Person
 
-class PersonResource(ModelResource):
-    model = Person
-    fields = ('id', 'username')
+class PersonSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Person
+        fields = ('id', 'username')
