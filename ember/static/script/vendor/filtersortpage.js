@@ -1,4 +1,4 @@
-var get = Ember.get;
+var get = Ember.get, set = Ember.set;
 
 /**
  *   @extends Ember.Mixin
@@ -10,11 +10,13 @@ Ember.FilterSortSliceMixin = Ember.Mixin.create({
   filterBy: '',
   sortDirection: 'asc',
 
-  availableColumns: function() {
-    return this.get('content').get('type.ClassMixin.ownerConstructor.attributes.keys').toArray();
-  }.property(),
+  availableColumns: Ember.computed(function() {
+    var columns = this.get('content').get('type.ClassMixin.ownerConstructor.attributes.keys').toArray();
+    columns.unshift('id');
+    return columns;
+  }).property(),
 
-  sortColumns: function() {
+  sortColumns: Ember.computed(function() {
 
     var sortable = [];
     var attributes = this.get('availableColumns');
@@ -25,9 +27,9 @@ Ember.FilterSortSliceMixin = Ember.Mixin.create({
     }
     return sortable;
 
-  }.property(),
+  }).property(),
 
-  sortby: function(event) {
+  sortby: Ember.computed(function() {
     var sortby = event.context.column;
     var incomingDirection = event.context.dir;
     var route = this.get('sortableRoute');
@@ -42,9 +44,9 @@ Ember.FilterSortSliceMixin = Ember.Mixin.create({
     }
 
     this.get('target').send(route, {column:sortby,dir:direction});
-  },
+  }).property(),
 
-  pages: function() {
+  pages: Ember.computed(function() {
 
     var availablePages = this.get('availablePages'),
     pages = [],
@@ -57,44 +59,47 @@ Ember.FilterSortSliceMixin = Ember.Mixin.create({
 
     return pages;
 
-  }.property('availablePages'),
+  }).property('availablePages'),
 
-  currentPage: function() {
+  currentPage: Ember.computed(function() {
 
     return parseInt(this.get('selectedPage'), 10) || 1;
 
-  }.property('selectedPage'),
+  }).property('selectedPage'),
 
-  nextPage: function() {
+  nextPage: Ember.computed(function() {
 
     var nextPage = this.get('currentPage') + 1;
     var availablePages = this.get('availablePages');
-    if (nextPage <= availablePages) { this.transitionTo(nextPage) }
 
-  },
+    if (nextPage <= availablePages) {
+        return PersonApp.Page.create({id: nextPage});
+    }else{
+        return PersonApp.Page.create({id: this.get('currentPage')});
+    }
 
-  prevPage: function() {
+  }).property('currentPage', 'paginatedContent.length'),
+
+  prevPage: Ember.computed(function() {
 
     var prevPage = this.get('currentPage') - 1;
-    if (prevPage > 0) { this.transitionTo(prevPage) }
+    var availablePages = this.get('availablePages');
 
-  },
+    if (prevPage > 0) {
+        return PersonApp.Page.create({id: prevPage});
+    }else{
+        return PersonApp.Page.create({id: this.get('currentPage')});
+    }
 
-  transitionTo: function(page) {
+  }).property('currentPage', 'paginatedContent.length'),
 
-    var pages = this.get('pages');
-    var route = this.get('paginationRoute');
-    this.get('target').send(route, pages[page - 1]);
-
-  },
-
-  availablePages: function() {
+  availablePages: Ember.computed(function() {
 
     return Math.ceil((this.get('filteredContent.length') / this.get('itemsPerPage')) || 1);
 
-  }.property('filteredContent.length'),
+  }).property('filteredContent.length'),
 
-  paginatedContent: function() {
+  paginatedContent: Ember.computed(function() {
 
     var selectedPage = this.get('selectedPage') || 1;
     var upperBound = (selectedPage * this.get('itemsPerPage'));
@@ -103,9 +108,9 @@ Ember.FilterSortSliceMixin = Ember.Mixin.create({
 
     return sorted.slice(lowerBound, upperBound);
 
-  }.property('selectedPage', 'sortedContent.@each'),
+  }).property('selectedPage', 'sortedContent.@each'),
 
-  sortedContent: function() {
+  sortedContent: Ember.computed(function() {
     var sortby = this.get('sortBy');
     var direction = this.get('sortDirection');
     var filtered = this.get('filteredContent');
@@ -120,9 +125,9 @@ Ember.FilterSortSliceMixin = Ember.Mixin.create({
 
     return sorted;
 
-  }.property('sortDirection', 'sortBy', 'filteredContent.@each'),
+  }).property('sortDirection', 'sortBy', 'filteredContent.@each'),
 
-  filteredContent: function() {
+  filteredContent: Ember.computed(function() {
     var self = this;
     var filter = this.get('filterBy').trim();
 
@@ -142,6 +147,6 @@ Ember.FilterSortSliceMixin = Ember.Mixin.create({
 
     return this.get('content');
 
-  }.property('filterBy', 'content.@each')
+  }).property('filterBy', 'content.@each')
 
 });
