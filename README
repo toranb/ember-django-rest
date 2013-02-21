@@ -1,20 +1,15 @@
-a simple django web application to spike around with ember.js
+**This project is currently broken as I'm upgrading it to RC1**
+
+I built this ember.js app to show how you would use a custom mixin for
+
+pagination
+filtering
+sorting
+
+When this app is working (if you reset HEAD a few times it was working...)
 
 To run this django application
 
 1. pip install -r requirements.txt
-2. python manage.py syncdb
+2. python manage.py syncdb --noinput
 3. python manage.py runserver
-
-To run the tests you first need to install phantomJS
-
-Ubuntu `apt-get install phantomjs`
-OSX `brew install phantomjs`
-
-Next run npm install to pull down the jasmine-phantom-node module
-
-npm install
-
-Now you can run the tests from the root like so
-
-node node_modules/jasmine-phantom-node/bin/jasmine-phantom-node ember/static/script/tests

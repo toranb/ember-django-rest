@@ -43,13 +43,10 @@ PersonApp.Person = DS.Model.extend({
     username: DS.attr('string')
 });
 
+DS.DjangoRESTAdapter.configure("plurals", {"person" : "people"});
 PersonApp.Store = DS.Store.extend({
     revision: 11,
-    adapter: DS.DjangoRESTAdapter.create({
-        plurals: {
-          person: 'people'
-        }
-    })
+    adapter: DS.DjangoRESTAdapter.create()
 });
 
 PersonApp.Page = Ember.Object.extend({
@@ -76,13 +73,21 @@ PersonApp.PaginationView = Ember.View.extend({
     }.property('parentView.controller.currentPage')
 });
 
+// PersonApp.Router.map(function(match) {
+//     match("/").to("person", function(match) {
+//       match("/").to("person");
+//       match("/page/:page_id").to("person");
+//     });
+//     match("/search/:term").to("search");
+//     match("/sort/:column/direction/:dir").to("sort");
+// });
+
 PersonApp.Router.map(function(match) {
-    match("/").to("person", function(match) {
-      match("/").to("person");
-      match("/page/:page_id").to("person");
+    this.resource("person", { path: "/" }, function() {
+        this.route("page", { path: "/page/:page_id" });
     });
-    match("/search/:term").to("search");
-    match("/sort/:column/direction/:dir").to("sort");
+    this.resource("search", { path: "/search/:term" });
+    this.resource("sort", { path: "/sort/:column/direction/:dir" });
 });
 
 PersonApp.PersonRoute = Ember.Route.extend({
