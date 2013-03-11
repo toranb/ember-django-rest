@@ -77,7 +77,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'rest_framework',
     'ember.person',
-    'templatetag_handlebars',
 )
 
 # A sample logging configuration. The only tangible logging
