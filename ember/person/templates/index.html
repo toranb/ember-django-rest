@@ -25,15 +25,11 @@
    <input type="submit" value="add" {{action addPerson this target="view"}}/>
 </div><br />
 
-<div>
-   {{view PersonApp.SearchField placeholder="search..." valueBinding="searchText"}}
-</div>
-
 <table width="250px">
 <thead>
 
 {{#each context in controller.sortColumns}}
-<th>{{#linkTo 'sort' context target="controller"}}{{context.column}}{{/linkTo}}</th>
+<th>{{context.column}}</th>
 {{/each}}
 
 <th>update</th>
@@ -51,12 +47,13 @@
 </tbody>
 </table>
 
-{{ prevPage }}
+<div name="prev">{{#linkTo 'person.page' prevPage target="controller"}}Prev{{/linkTo}}</div>
 <ul class="pagination gui-text">
   {{#each pages}}
     {{view PersonApp.PaginationView contentBinding="this"}}
   {{/each}}
 </ul>
+<div name="next">{{#linkTo 'person.page' nextPage target="controller"}}Next{{/linkTo}}</div>
 {% endverbatim %}
 </script>
 

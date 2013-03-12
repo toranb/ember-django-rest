@@ -2,17 +2,17 @@ PersonApp = Ember.Application.create();
 PersonApp.SearchField = Ember.TextField.extend({
     keyUp: function(e) {
         var search = this.get('value');
-        this.get('controller').send('search', {term:search}); //this is broken in v2
+        this.get('controller').send('search', {term:search});
     }
 });
 
 PersonApp.PersonView = Ember.View.extend({
     templateName: 'person',
     addPerson: function(event) {
-        var username = event.get('username'); //run tests?
+        var username = event.get('username');
         if (username) {
             this.get('controller').addPerson(username);
-            event.set('username', ''); //tdd
+            event.set('username', '');
         }
     }
 });
@@ -31,7 +31,7 @@ PersonApp.PersonController = Ember.ArrayController.extend(Ember.FilterSortSliceM
         this.commit();
     },
     deletePerson: function(event) {
-        event.deleteRecord(); //tdd
+        event.deleteRecord();
         this.commit();
     },
     commit: function() {
@@ -73,80 +73,23 @@ PersonApp.PaginationView = Ember.View.extend({
     }.property('parentView.controller.currentPage')
 });
 
-// PersonApp.Router.map(function(match) {
-//     match("/").to("person", function(match) {
-//       match("/").to("person");
-//       match("/page/:page_id").to("person");
-//     });
-//     match("/search/:term").to("search");
-//     match("/sort/:column/direction/:dir").to("sort");
-// });
-
 PersonApp.Router.map(function(match) {
     this.resource("person", { path: "/" }, function() {
         this.route("page", { path: "/page/:page_id" });
     });
-    this.resource("search", { path: "/search/:term" });
-    this.resource("sort", { path: "/sort/:column/direction/:dir" });
+});
+
+PersonApp.PersonPageRoute = Ember.Route.extend({
+    model: function(params) {
+        return PersonApp.Person.find(params.page_id);
+    },
+    setupController: function(controller, model) {
+        this.controllerFor('person').set('selectedPage', model.get('id'));
+    }
 });
 
 PersonApp.PersonRoute = Ember.Route.extend({
-    selectedPage: 1,
     model: function(params) {
-        if (get(params, 'page_id') !== undefined) {
-            this.selectedPage = get(params, 'page_id');
-        } else {
-            this.selectedPage = 1;
-        }
-        this.controllerFor('person').set('selectedPage', this.selectedPage);
         return PersonApp.Person.find();
-    },
-    setupController: function(controller, page) {
-        controller.set('content', PersonApp.Person.find());
-        if (page.get('id') !== undefined) {
-            this.selectedPage = page.get('id');
-        }
-        controller.set('selectedPage', this.selectedPage);
-    }
-});
-
-PersonApp.SortRoute = Ember.Route.extend({
-    sortBy: '',
-    sortDirection: 'asc',
-    renderTemplates: function() {
-        var controller = this.controllerFor('person');
-        this.render('person', {
-            into: 'application',
-            outlet: 'person',
-            controller: controller
-        });
-    },
-    model: function(params) {
-        this.sortBy = params.column;
-        this.sortDirection = params.dir;
-        return PersonApp.Person.find();
-    },
-    setupController: function(controller, page_id) {
-        this.controllerFor('person').set('sortBy', this.sortBy);
-        this.controllerFor('person').set('sortDirection', this.sortDirection);
-    }
-});
-
-PersonApp.SearchRoute = Ember.Route.extend({
-    filterBy: '',
-    renderTemplates: function() {
-        var controller = this.controllerFor('person');
-        this.render('person', {
-            into: 'application',
-            outlet: 'person',
-            controller: controller
-        });
-    },
-    model: function(params) {
-        this.filterBy = params.term;
-        return PersonApp.Person.find();
-    },
-    setupController: function(controller, page_id) {
-        this.controllerFor('person').set('filterBy', this.filterBy);
     }
 });
