@@ -1,12 +1,8 @@
-**This project is currently broken as I'm upgrading it to RC1**
-
 I built this ember.js app to show how you would use a custom mixin for
 
 pagination
-filtering
-sorting
-
-When this app is working (if you reset HEAD a few times it was working...)
+filtering (not yet implemented)
+sorting (not yet implemented)
 
 To run this django application
 
