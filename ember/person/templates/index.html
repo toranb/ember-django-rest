@@ -60,7 +60,7 @@
 <script type="text/x-handlebars" data-template-name="pagination">
 {% verbatim %}
 {{#with view}}
-{{#linkTo 'person.page' content}}
+{{#linkTo 'person.page' page}}
   <span {{bindAttr class="spanClasses isActive:active"}}>{{content.page_id}}</span>
 {{/linkTo}}
 {{/with}}
