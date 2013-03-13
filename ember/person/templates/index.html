@@ -31,7 +31,7 @@
 <thead>
 
 {{#each context in controller.sortColumns}}
-<th>{{context.column}}</th>
+<th>{{#linkTo 'person.sort' context.column target="controller"}}{{context.column}}{{/linkTo}}</th>
 {{/each}}
 
 <th>update</th>

@@ -51,7 +51,8 @@ PersonApp.Store = DS.Store.extend({
 });
 
 PersonApp.Page = Ember.Object.extend({
-    term: ''
+    term: '',
+    column: ''
 });
 
 PersonApp.PaginationView = Ember.View.extend({
@@ -79,7 +80,17 @@ PersonApp.Router.map(function(match) {
     this.resource("person", { path: "/" }, function() {
         this.route("page", { path: "/page/:page_id" });
         this.route("search", { path: "/search/:page_term" });
+        this.route("sort", { path: "/sort/:page_column" });
     });
+});
+
+PersonApp.PersonSortRoute = Ember.Route.extend({
+  setupController: function(controller, model) {
+    this.controllerFor('person').set('sortBy', model);
+  },
+  model: function(params) {
+    return PersonApp.Page.create({column: params.page_column});
+  }
 });
 
 PersonApp.PersonSearchRoute = Ember.Route.extend({
