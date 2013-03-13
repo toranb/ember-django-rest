@@ -2,7 +2,8 @@ PersonApp = Ember.Application.create();
 PersonApp.SearchField = Ember.TextField.extend({
     keyUp: function(e) {
         var search = this.get('value');
-        this.get('controller').send('search', {term:search});
+        model = PersonApp.Page.create({term: search});
+        this.get('controller.target').transitionTo('person.search', model);
     }
 });
 
@@ -50,6 +51,7 @@ PersonApp.Store = DS.Store.extend({
 });
 
 PersonApp.Page = Ember.Object.extend({
+    term: ''
 });
 
 PersonApp.PaginationView = Ember.View.extend({
@@ -76,7 +78,20 @@ PersonApp.PaginationView = Ember.View.extend({
 PersonApp.Router.map(function(match) {
     this.resource("person", { path: "/" }, function() {
         this.route("page", { path: "/page/:page_id" });
+        this.route("search", { path: "/search/:page_term" });
     });
+});
+
+PersonApp.PersonSearchRoute = Ember.Route.extend({
+  setupController: function(controller, model) {
+    this.controllerFor('person').set('filterBy', model.get('term'));
+  },
+  model: function(params) {
+    return PersonApp.Page.create({term: params.page_term});
+  },
+  serialize: function(model) {
+    return { page_term: model.term };
+  }
 });
 
 PersonApp.PersonPageRoute = Ember.Route.extend({
