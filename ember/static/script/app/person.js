@@ -19,11 +19,7 @@ PersonApp.PersonView = Ember.View.extend({
 });
 
 PersonApp.PersonController = Ember.ArrayController.extend(Ember.FilterSortSliceMixin, {
-    content: [],
-    sortBy: 'id',
     itemsPerPage: 2,
-    paginationRoute: 'pagination',
-    sortableRoute: 'sort',
     addPerson: function(username) {
         PersonApp.Person.createRecord({ username: username });
         this.commit();

@@ -78,12 +78,11 @@ Ember.FilterSortSliceMixin = Ember.Mixin.create({
         return PersonApp.Page.create({id: this.get('currentPage')});
     }
 
-  }.property('currentPage', 'paginatedContent.length'),
+  }.property('currentPage', 'availablePages'),
 
   prevPage: function() {
 
     var prevPage = this.get('currentPage') - 1;
-    var availablePages = this.get('availablePages');
 
     if (prevPage > 0) {
         return PersonApp.Page.create({id: prevPage});
@@ -91,7 +90,7 @@ Ember.FilterSortSliceMixin = Ember.Mixin.create({
         return PersonApp.Page.create({id: this.get('currentPage')});
     }
 
-  }.property('currentPage', 'paginatedContent.length'),
+  }.property('currentPage'),
 
   availablePages: function() {
 
