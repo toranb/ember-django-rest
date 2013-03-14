@@ -107,7 +107,7 @@ PersonApp.PersonSearchRoute = Ember.Route.extend({
 
 PersonApp.PersonPageRoute = Ember.Route.extend({
     model: function(params) {
-        return PersonApp.Person.find(params.page_id);
+        return PersonApp.Page.create({id: params.page_id});
     },
     setupController: function(controller, model) {
         this.controllerFor('person').set('selectedPage', model.get('id'));
