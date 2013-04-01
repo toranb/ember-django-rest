@@ -110,7 +110,7 @@ Ember.FilterSortSliceMixin = Ember.Mixin.create({
   }.property('selectedPage', 'sortedContent.@each'),
 
   sortedContent: function() {
-    var sortby = this.get('sortBy');
+    var sortby = this.get('sortBy') || 'id';
     var direction = this.get('sortDirection');
     var filtered = this.get('filteredContent');
 

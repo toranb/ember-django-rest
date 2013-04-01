@@ -10,10 +10,10 @@ PersonApp.SearchField = Ember.TextField.extend({
 PersonApp.PersonView = Ember.View.extend({
     templateName: 'person',
     addPerson: function(event) {
-        var username = event.get('username');
+        var username = this.get('username');
         if (username) {
             this.get('controller').addPerson(username);
-            event.set('username', '');
+            this.set('username', '');
         }
     }
 });
@@ -42,7 +42,7 @@ PersonApp.Person = DS.Model.extend({
 
 DS.DjangoRESTAdapter.configure("plurals", {"person" : "people"});
 PersonApp.Store = DS.Store.extend({
-    revision: 11,
+    revision: 12,
     adapter: DS.DjangoRESTAdapter.create()
 });
 
