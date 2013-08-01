@@ -31,7 +31,7 @@
 <thead>
 
 {{#each context in controller.sortColumns}}
-<th>{{#linkTo 'person.sort' context.column target="controller"}}{{context.column}}{{/linkTo}}</th>
+<th>{{#linkTo 'person' PersonApp.sortApp }}{{context.column}}{{/linkTo}}</th>
 {{/each}}
 
 <th>update</th>
@@ -49,20 +49,20 @@
 </tbody>
 </table>
 
-<div name="prev">{{#linkTo 'person.page' prevPage target="controller"}}Prev{{/linkTo}}</div>
+<div name="prev">{{#linkTo 'person' PersonApp.pageApp}}Prev{{/linkTo}}</div>
 <ul class="pagination gui-text">
   {{#each pages}}
     {{view PersonApp.PaginationView contentBinding="this"}}
   {{/each}}
 </ul>
-<div name="next">{{#linkTo 'person.page' nextPage target="controller"}}Next{{/linkTo}}</div>
+<div name="next">{{#linkTo 'person' PersonApp.pageApp}}Next{{/linkTo}}</div>
 {% endverbatim %}
 </script>
 
 <script type="text/x-handlebars" data-template-name="pagination">
 {% verbatim %}
 {{#with view}}
-{{#linkTo 'person.page' page}}
+{{#linkTo 'person' PersonApp.pageApp}}
   <span {{bindAttr class="spanClasses isActive:active"}}>{{content.page_id}}</span>
 {{/linkTo}}
 {{/with}}
@@ -71,7 +71,9 @@
 
 <script src="{{ STATIC_URL }}script/vendor/jquery-1.9.1.js" type="text/javascript"></script>
 <script src="{{ STATIC_URL }}script/vendor/handlebars-1.0.0-rc.4.js" type="text/javascript"></script>
-<script src="{{ STATIC_URL }}script/vendor/ember-1.0.0-rc.5.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}script/vendor/ember.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}script/vendor/jquery-deparam.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}script/vendor/ember-query-params.js" type="text/javascript"></script>
 <script src="{{ STATIC_URL }}script/vendor/ember-data.js" type="text/javascript"></script>
 <script src="{{ STATIC_URL }}script/vendor/adapter.js" type="text/javascript"></script>
 <script src="{{ STATIC_URL }}script/vendor/filtersortpage.js" type="text/javascript"></script>
