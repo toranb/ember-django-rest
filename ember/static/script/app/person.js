@@ -46,11 +46,18 @@ PersonApp.Person = DS.Model.extend({
     username: DS.attr('string')
 });
 
-DS.DjangoRESTAdapter.configure("plurals", {"person" : "people"});
+//DS.DjangoRESTAdapter.configure("plurals", {"person" : "people"});
 PersonApp.Store = DS.Store.extend({
-    revision: 12,
-    adapter: DS.DjangoRESTAdapter.create()
+    adapter: 'DS.FixtureAdapter'
 });
+
+PersonApp.Person.FIXTURES = [{
+    id: 1, username: "toranz"
+}];
+// PersonApp.Store = DS.Store.extend({
+//     revision: 12,
+//     adapter: DS.DjangoRESTAdapter.create()
+// });
 
 PersonApp.Page = Ember.Object.extend({
     term: '',
