@@ -11,7 +11,8 @@ Ember.FilterSortSliceMixin = Ember.Mixin.create({
   sortDirection: 'asc',
 
   availableColumns: function() {
-    var columns = this.get('content').get('type.ClassMixin.ownerConstructor.attributes.keys').toArray();
+    //var columns = this.get('content').get('type.ClassMixin.ownerConstructor.attributes.keys').toArray();
+    var columns = ['id', 'username'];
     columns.unshift('id');
     return columns;
   }.property(),
